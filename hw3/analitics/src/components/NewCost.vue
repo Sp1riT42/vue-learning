@@ -57,12 +57,12 @@ export default {
         date: this.date || this.getCurrentDate()
       }
       console.log('save', data)
-    //  this.$emit('addNewPayment', data)
-      this.$store.dispatch('loadData', [data]).then(() => {
+      this.$emit('addNewPayment', data)
+/*      this.$store.dispatch('loadData', [data]).then(() => {
         this.$emit('getCategory')
     //    this.$store.commit('setMaxPages', this.$store.getters.getPaymentList)
         this.$emit('getPaymentList')
-      })
+      })*/
     //  this.$store.commit('addToPaymentList', [data])
 
      // this.categoryList = this.$store.getters.getCategoryList

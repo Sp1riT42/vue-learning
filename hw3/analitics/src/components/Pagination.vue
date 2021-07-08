@@ -26,8 +26,8 @@ export default {
   name: "Pagination",
   props: {
     paymentsList: {
-      type: Array,
-      default: ()=>[],
+      type: Object,
+      default: ()=>{},
       required: true
     },
     currentPage: {
@@ -60,9 +60,9 @@ export default {
     }
   },
   computed: {
-    getPageCount() {
+    /*getPageCount() {
       return Math.ceil(this.paymentsList.length/5)
-    }
+    }*/
   }
 }
 </script>

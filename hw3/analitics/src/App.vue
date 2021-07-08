@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      paymentsList: [],
+      paymentsList: {},
       maxItem: 3,
       maxPages: 0,
       currentPage: 1,
@@ -88,7 +88,11 @@ export default {
       ]
     },
     addPaymentItem(data) {
-      this.paymentsList = [...this.paymentsList,data]
+      this.$store.commit('addCategory', data.category)
+      this.$store.dispatch('loadData', [data]).then(() => {
+        this.getCategoryList()
+        this.getPaymentList()
+      })
     },
     setCurrentPage(idx) {
       console.log(idx)
@@ -125,24 +129,16 @@ export default {
   },
   computed: {
     getFilterPaymentList() {
-      return this.paymentsList.slice((this.currentPage-1)* this.maxItem, this.currentPage * this.maxItem)
+      return this.paymentsList['page'+this.currentPage]
     },
-    /*getCategoryList() {
-      this.categoryList = this.$store.getters.getCategoryList
-    }*/
-    // getMaxPages() {
-    //   this.maxPages = this.$store.getters.getPages
-    // }
+
   },
   created() {
-    //this.paymentsList = this.fetchData()
     this.$store.dispatch("fetchData", 1).then(() => {
       this.paymentsList = this.$store.getters.getPaymentList
       this.maxPages = this.$store.getters.getPages
-
     })
     this.categoryList = this.$store.getters.getCategoryList
-    //this.paymentsList = this.$store.getters.getPaymentList
   },
   updated() {
     this.maxPages = this.$store.getters.getPages
