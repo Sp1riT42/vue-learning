@@ -5,7 +5,7 @@
       <div class="pagination__item">
         <div class="pagination__content" @click="pickedPage('minus')">{{left}}</div>
       </div>
-      <div class="pagination__number pagination__item" v-for="(page,idx) in getPageCount" :key="page">
+      <div class="pagination__number pagination__item" v-for="(page,idx) in maxPages" :key="page">
         <div class="pagination__content"
              :class="{active: currentPage === idx+1}"
              @click="pickedPage(idx)"
@@ -33,6 +33,11 @@ export default {
     currentPage: {
       type: Number,
       default: ()=> 1,
+      required: true
+    },
+    maxPages: {
+      type: Number,
+      default: ()=> 0,
       required: true
     }
   },

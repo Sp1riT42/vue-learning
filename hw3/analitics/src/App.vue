@@ -3,9 +3,9 @@
     <img alt="Vue logo" src="./assets/logo.png">
 <!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
     <h1>My personal coast</h1>
-    <NewCost @addNewPayment="addPaymentItem"/>
-    <CostsTable :paymentsList="getFilterPaymentList" :currentPage="currentPage" :maxItem="maxItem"></CostsTable>
-    <Pagination :currentPage="currentPage" :paymentsList="paymentsList" @pickedPage="setCurrentPage"/>
+    <NewCost @addNewPayment="addPaymentItem" :categoryList="categoryList" @getCategory="getCategoryList" @getPaymentList="getPaymentList"/>
+    <CostsTable :paymentsList="getFilterPaymentList" :currentPage="currentPage" :maxItem="maxItem" ></CostsTable>
+    <Pagination :currentPage="currentPage" :paymentsList="paymentsList" :maxPages="maxPages" @pickedPage="setCurrentPage"/>
   </div>
 </template>
 
@@ -26,8 +26,10 @@ export default {
   data() {
     return {
       paymentsList: [],
-      maxItem: 5,
-      currentPage: 1
+      maxItem: 3,
+      maxPages: 0,
+      currentPage: 1,
+      categoryList: []
     }
   },
   methods: {
@@ -89,27 +91,61 @@ export default {
       this.paymentsList = [...this.paymentsList,data]
     },
     setCurrentPage(idx) {
+      console.log(idx)
       if(idx === 'minus') {
         if(this.currentPage > 1) {
           this.currentPage--
         }
       } else if(idx === 'plus') {
-        if(this.currentPage < Math.ceil(this.paymentsList.length/5)) {
+        if(this.currentPage < this.maxPages) {
           this.currentPage++
         }
       } else{
         this.currentPage = idx
       }
-
+      if(idx) {
+        this.addNewPages()
+      }
+      this.$store.commit('setCurrentPage', this.currentPage)
+    },
+    addNewPages() {
+      this.$store.dispatch("fetchData", this.currentPage).then(() => {
+        this.paymentsList = this.$store.getters.getPaymentList
+        this.maxPages = this.$store.getters.getPages
+      })
+    },
+    getCategoryList() {
+      this.categoryList = this.$store.getters.getCategoryList
+    },
+    getPaymentList() {
+      this.paymentsList = this.$store.getters.getPaymentList
+      this.maxPages = this.$store.getters.getPages
+      console.log('maxpages = '+this.maxPages)
     }
   },
   computed: {
     getFilterPaymentList() {
       return this.paymentsList.slice((this.currentPage-1)* this.maxItem, this.currentPage * this.maxItem)
-    }
+    },
+    /*getCategoryList() {
+      this.categoryList = this.$store.getters.getCategoryList
+    }*/
+    // getMaxPages() {
+    //   this.maxPages = this.$store.getters.getPages
+    // }
   },
   created() {
-    this.paymentsList = this.fetchData()
+    //this.paymentsList = this.fetchData()
+    this.$store.dispatch("fetchData", 1).then(() => {
+      this.paymentsList = this.$store.getters.getPaymentList
+      this.maxPages = this.$store.getters.getPages
+
+    })
+    this.categoryList = this.$store.getters.getCategoryList
+    //this.paymentsList = this.$store.getters.getPaymentList
+  },
+  updated() {
+    this.maxPages = this.$store.getters.getPages
   }
 }
 </script>

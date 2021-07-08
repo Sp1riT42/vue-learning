@@ -3,7 +3,16 @@
     <button @click="showInput = !showInput">ADD NEW COST +</button>
     <div v-show="showInput">
       <input type="number" placeholder="Payment value" v-model.trim.number="value">
-      <input type="text" placeholder="Payment category" v-model.trim="category">
+      <div style="display: inline-block; position: relative">
+        <input type="text" placeholder="Payment category" v-model.trim="pickedCategory" @click="showCategory = !showCategory">
+        <div class="modal" v-show="showCategory">
+          <div v-for="(category, idx) in categoryList" :key="category">
+            <input type="radio" name="category" :id="category + idx" v-model="pickedCategory" :value="category">
+            <label :for="category + idx">{{ category }}</label>
+          </div>
+        </div>
+      </div>
+
       <input type="text" placeholder="Payment date" v-model.trim="date">
       <button @click="saveCost">Save</button>
     </div>
@@ -14,12 +23,22 @@
 <script>
 export default {
   name: "NewCost",
+  props: {
+    categoryList: {
+      type: Array,
+      default: () => [],
+      required: true
+    }
+  },
   data(){
     return {
       showInput: false,
       value: 0,
       category: '',
-      date: ''
+      date: '',
+      id: 0,
+      showCategory: false,
+      pickedCategory: ''
     }
   },
   methods: {
@@ -31,18 +50,34 @@ export default {
       return `${d}.${m}.${y}`
     },
     saveCost() {
-      const {value, category} = this
+      const {value, pickedCategory} = this
       const data = {
         value,
-        category,
+        category: pickedCategory,
         date: this.date || this.getCurrentDate()
       }
-      this.$emit('addNewPayment', data)
+      console.log('save', data)
+    //  this.$emit('addNewPayment', data)
+      this.$store.dispatch('loadData', [data]).then(() => {
+        this.$emit('getCategory')
+    //    this.$store.commit('setMaxPages', this.$store.getters.getPaymentList)
+        this.$emit('getPaymentList')
+      })
+    //  this.$store.commit('addToPaymentList', [data])
+
+     // this.categoryList = this.$store.getters.getCategoryList
+
     }
   }
 }
 </script>
 
 <style scoped>
-
+.modal {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #c4c4c4;
+  padding: 8px;
+  box-shadow: 0px 6px 8px;
+}
 </style>
