@@ -4,6 +4,13 @@
 <!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
     <h1>My personal coast</h1>
     <NewCost @addNewPayment="addPaymentItem" :categoryList="categoryList" @getCategory="getCategoryList" @getPaymentList="getPaymentList"/>
+    <div>
+      <router-link to="/add/payment/Food?value=200&date=20.03.2020">Food: 200</router-link> /
+      <router-link to="/add/payment/Food?value=2000&date=20.03.2020">Food: 2000</router-link> /
+      <router-link to="/add/payment/Transport?value=50">Transport: 50</router-link> /
+      <router-link to="/add/payment/Entertaiment?value=2000">Entertaiment: 2000</router-link>
+<!--      <router-view></router-view>-->
+    </div>
     <CostsTable :paymentsList="getFilterPaymentList" :currentPage="currentPage" :maxItem="maxItem" ></CostsTable>
     <Pagination :currentPage="currentPage" :paymentsList="paymentsList" :maxPages="maxPages" @pickedPage="setCurrentPage"/>
   </div>
@@ -139,9 +146,14 @@ export default {
       this.maxPages = this.$store.getters.getPages
     })
     this.categoryList = this.$store.getters.getCategoryList
+
+    // if(location.pathname === '/') {
+    //
+    // }
   },
   updated() {
     this.maxPages = this.$store.getters.getPages
+
   }
 }
 </script>

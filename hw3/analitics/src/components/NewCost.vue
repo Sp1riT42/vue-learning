@@ -68,6 +68,28 @@ export default {
      // this.categoryList = this.$store.getters.getCategoryList
 
     }
+  },
+  watch: {
+    $route(to, from) {
+      console.log(to.path, from, this.$route.query )
+      console.log(location)
+      if(to.path === `/add/payment/${this.$route.params.category}`) {
+        this.showInput = true
+        this.value = this.$route.query.value || 0
+        this.date = this.$route.query.date || this.getCurrentDate()
+        this.pickedCategory = this.$route.params.category
+      }
+
+    }
+  },
+  created() {
+    //console.log(location.pathname)
+    if(location.pathname === `/add/payment/${this.$route.params.category}`) {
+      this.showInput = true
+      this.value = this.$route.query.value
+      this.date = this.$route.query.date || this.getCurrentDate()
+      this.pickedCategory = this.$route.params.category
+    }
   }
 }
 </script>
