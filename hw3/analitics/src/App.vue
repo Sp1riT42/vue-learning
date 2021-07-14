@@ -3,7 +3,8 @@
     <img alt="Vue logo" src="./assets/logo.png">
 <!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
     <h1>My personal coast</h1>
-    <NewCost @addNewPayment="addPaymentItem" :categoryList="categoryList" @getCategory="getCategoryList" @getPaymentList="getPaymentList"/>
+    <button @click="showForm = !showForm">ADD NEW COST +</button>
+    <NewCost v-show="showForm" @addNewPayment="addPaymentItem" :categoryList="categoryList" @getCategory="getCategoryList" @getPaymentList="getPaymentList"/>
     <div>
       <router-link to="/add/payment/Food?value=200&date=20.03.2020">Food: 200</router-link> /
       <router-link to="/add/payment/Food?value=2000&date=20.03.2020">Food: 2000</router-link> /
@@ -32,6 +33,7 @@ export default {
   },
   data() {
     return {
+      showForm: false,
       paymentsList: {},
       maxItem: 3,
       maxPages: 0,

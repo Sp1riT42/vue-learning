@@ -72,13 +72,41 @@ export default new Vuex.Store({
             }
             const pages = Object.keys(state.mainPaymentList).length
             payload[0].id = ++state.maxId
-            if(state.mainPaymentList['page'+pages].length < state.maxItem) {
-                state.mainPaymentList['page'+pages].push(...payload)
-                state.mainPaymentList = {...state.mainPaymentList}
-            } else {
-                state.mainPaymentList['page'+(pages+1)] = [...payload]
+            console.log(pages, state.maxItem)
+            for(let i = 1; i <= pages; i++) {
+                if(state.mainPaymentList['page'+i].length < state.maxItem) {
+                    state.mainPaymentList['page'+i].push(...payload)
+                    state.mainPaymentList = {...state.mainPaymentList}
+                    break
+                } else if (i === pages){
+                    console.log(i, pages)
+                    state.mainPaymentList['page'+(i+1)] = [...payload]
+                }
             }
+
             console.log(payload, state.mainPaymentList)
+        },
+        changeMainPaymentList(state, payload) {
+            console.log(payload, payload[0].id)
+            for(let val in state.mainPaymentList) {
+                let idx = state.mainPaymentList[val].findIndex(item => item.id === payload[0].id)
+                if(idx !== -1) {
+                    console.log(val, idx)
+                    state.mainPaymentList[val][idx] = payload[0]
+                    console.log(state.mainPaymentList[val][idx])
+                }
+            }
+
+        },
+        deleteRowMainPaymentList(state, payload) {
+            for(let val in state.mainPaymentList) {
+                let idx = state.mainPaymentList[val].findIndex(item => item.id === payload[0].id)
+                if(idx !== -1) {
+                    console.log(val, idx)
+                    state.mainPaymentList[val].splice(idx, 1)
+                    console.log(state.mainPaymentList[val][idx])
+                }
+            }
         },
         setCurrentPage(state, payload) {
             state.currentPage = payload
@@ -119,6 +147,26 @@ export default new Vuex.Store({
                     })
 
                 })
-        }
+        },
+        changeData({commit}, paymentItem) {
+            return new Promise((resolve) => {
+                resolve(paymentItem)
+            })
+                .then(res => {
+                    commit('changeMainPaymentList', res)
+                })
+        },
+        deleteRow({commit}, paymentItem) {
+            return new Promise((resolve) => {
+                resolve(paymentItem)
+            })
+                .then(res => {
+                    commit('deleteRowMainPaymentList', res)
+                    // return new Promise((resolve) => {
+                    //     resolve(this.dispatch('fetchData', this.state.currentPage))
+                    // })
+
+                })
+        },
     }
 })

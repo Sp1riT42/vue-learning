@@ -11,15 +11,38 @@
         <div class="table__row-id table__cell">{{ (idx+1)+(currentPage-1)*maxItem }}</div>
         <div class="table__row-date table__cell">{{item.date}}</div>
         <div class="table__row-category table__cell">{{item.category}}</div>
-        <div class="table__row-value table__cell">{{item.value}}</div>
+        <div class="table__row-value table__cell">
+          <span class="table__value">{{item.value}}</span>
+          <button @click="clickOn($event, item)">...</button>
+          <transition name="fade">
+            <ModalWindow v-if="showForm === item" :settings="settings" :item="item" class="table__modal"/>
+          </transition>
+
+        </div>
       </div>
+
     </div>
   </div>
 </template>
 
 <script>
+import ModalWindow from "@/components/ModalWindow";
 export default {
   name: "CostsTable",
+  components: {
+    ModalWindow
+  },
+  data() {
+    return {
+      showForm: false,
+      targetPosition: {
+        left: 0,
+        top: 0
+      },
+      modalWindowName: '',
+      settings: {}
+    }
+  },
   props: {
     paymentsList: {
       type: Array,
@@ -36,6 +59,43 @@ export default {
       default: ()=> 5,
       required: true
     }
+  },
+  methods: {
+    clickOn(event, item) {
+      console.log(event, item, this.showForm)
+      if(this.showForm === item) {
+        this.showForm = false
+      } else {
+        this.showForm = item
+      }
+      //
+      // this.targetPosition.left = (event.target.offsetLeft - 102) + 'px'
+      // this.targetPosition.top = (event.target.offsetTop + 24) + 'px'
+      // console.log(this.targetPosition.left, this.targetPosition.top)
+      this.$modal.show('add', {
+       // header: 'Add My Cost',
+        compName: "ChangeRow",
+        category: this.categoryList
+      })
+
+    },
+    onShown(settings) {
+      this.modalWindowName = settings.name
+      this.settings = settings.settings
+    },
+    onHide() {
+      this.modalWindowName = ''
+      this.settings = {}
+    }
+  },
+  computed: {
+    categoryList(){
+      return this.$store.getters.getCategoryList
+    }
+  },
+  mounted() {
+    this.$modal.EventBus.$on('show', this.onShown)
+    this.$modal.EventBus.$on('hide', this.onHide)
   }
 }
 </script>
@@ -57,7 +117,22 @@ export default {
     border-bottom: 1px solid #c4c4c4;
     padding: 8px 0;
   }
+  .table__value {
+    margin: 0 16px;
+  }
   .table__cell {
     flex: 1;
+    position: relative;
   }
+  .table__modal {
+    position: absolute;
+  }
+</style>
+<style lang="scss">
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .30s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
 </style>

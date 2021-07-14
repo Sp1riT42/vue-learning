@@ -1,7 +1,6 @@
 <template>
   <div>
-    <button @click="showInput = !showInput">ADD NEW COST +</button>
-    <div v-show="showInput">
+    <div>
       <input type="number" placeholder="Payment value" v-model.trim.number="value">
       <div style="display: inline-block; position: relative">
         <input type="text" placeholder="Payment category" v-model.trim="pickedCategory" @click="showCategory = !showCategory">
@@ -32,7 +31,7 @@ export default {
   },
   data(){
     return {
-      showInput: false,
+
       value: 0,
       category: '',
       date: '',
