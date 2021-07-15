@@ -1,7 +1,7 @@
 <template>
   <div>
-    <input type="number" v-model.number="operand1" placeholder="operand1">
-    <input type="number" v-model.number="operand2" placeholder="operand2">
+    <input type="number" v-model.number="operand1" placeholder="operand1" name="operand1">
+    <input type="number" v-model.number="operand2" placeholder="operand2" name="operand2">
     <div v-show="!error">результат = {{result}}</div>
     <div v-show="error" :class="'err'">{{error}}</div>
     <div class="keyboard">
@@ -14,7 +14,7 @@
       <button
           v-for="operation in operations"
           :key="operation"
-          @click="calculate(operation)">
+          @click="calculate(operation)" :name="operation">
         {{ operation }}
       </button>
       <div class="key" v-show="showKey">
@@ -34,6 +34,7 @@
               :key="keyBtn"
               :class="'key-btn'"
               @click="pressKeyBtn(keyBtn, pickedOperand)"
+              :name="keyBtn"
           >
             {{ keyBtn }}
           </button>
