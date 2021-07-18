@@ -1,11 +1,25 @@
 <template>
   <div class="modal">
-    Modal Window
-    <button v-if="settings.compName === 'ChangeRow'" @click="showChangeForm = !showChangeForm">Редактировать</button>
+    <v-container>
+    <v-row>
+      <v-col cols="12" >
+        <v-btn class="float-right" v-if="settings.compName === 'ChangeRow'" @click="closeModal" icon><v-icon>mdi-close</v-icon></v-btn>
+      </v-col>
+      <v-col cols="12" >
+        <v-btn class="d-block mx-auto" v-if="settings.compName === 'ChangeRow'" @click="showChangeForm = !showChangeForm">Редактировать</v-btn>
+        <component v-if="showChangeForm" :is="settings.compName" :categoryList="settings.category" :item="item"/>
+      </v-col>
+      <v-col cols="12">
+        <v-btn class="d-block mx-auto"  v-if="settings.compName === 'ChangeRow'" @click="deleteRow">Удалить</v-btn>
+      </v-col>
+    </v-row>
+    </v-container>
+
 <!--    {{item}}-->
 
-    <component v-if="showChangeForm" :is="settings.compName" :categoryList="settings.category" :item="item"/>
-    <button v-if="settings.compName === 'ChangeRow'" @click="deleteRow">Удалить</button>
+
+
+
   </div>
 </template>
 
@@ -32,6 +46,9 @@ export default {
   methods: {
     deleteRow() {
       this.$store.dispatch('deleteRow', [this.item])
+    },
+    closeModal() {
+      this.$emit('closeModal', false)
     }
   }
 }
@@ -40,6 +57,7 @@ export default {
 <style scoped>
   .modal {
     position: absolute;
+    width: 300px;
     background-color: #fff;
     border: 1px solid #c4c4c4;
     padding: 8px;

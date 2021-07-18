@@ -17,7 +17,12 @@
         <div class="pagination__content" @click="pickedPage('plus')">{{right}}</div>
       </div>
     </div>
-
+<!--    <v-pagination
+    v-model="currentPage"
+    :length="maxPages"
+    @input="pickedPage(currentPage)"
+    >
+    </v-pagination>-->
   </div>
 </template>
 
@@ -73,12 +78,15 @@ export default {
   width: 500px;
   margin: 0 auto;
   padding: 8px 0;
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, .2), 0px 2px 2px 0px rgba(0, 0, 0, .14), 0px 1px 5px 0px rgba(0, 0, 0, .12);
 }
 .pagination__pages {
   display: flex;
 }
 .pagination__item {
   flex: 1;
+  justify-content: center;
+  display: flex;
 }
 .pagination__content {
   display: inline-block;
@@ -88,4 +96,6 @@ export default {
 .active {
   color: #41B883;
 }
+
+
 </style>

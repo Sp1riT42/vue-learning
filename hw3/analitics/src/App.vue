@@ -1,28 +1,98 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-<!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
-    <h1>My personal coast</h1>
-    <button @click="showForm = !showForm">ADD NEW COST +</button>
-    <NewCost v-show="showForm" @addNewPayment="addPaymentItem" :categoryList="categoryList" @getCategory="getCategoryList" @getPaymentList="getPaymentList"/>
-    <div>
-      <router-link to="/add/payment/Food?value=200&date=20.03.2020">Food: 200</router-link> /
-      <router-link to="/add/payment/Food?value=2000&date=20.03.2020">Food: 2000</router-link> /
-      <router-link to="/add/payment/Transport?value=50">Transport: 50</router-link> /
-      <router-link to="/add/payment/Entertaiment?value=2000">Entertaiment: 2000</router-link>
-<!--      <router-view></router-view>-->
-    </div>
-    <CostsTable :paymentsList="getFilterPaymentList" :currentPage="currentPage" :maxItem="maxItem" ></CostsTable>
-    <Pagination :currentPage="currentPage" :paymentsList="paymentsList" :maxPages="maxPages" @pickedPage="setCurrentPage"/>
-  </div>
+  <v-app>
+    <v-app-bar
+      app
+      color="primary"
+      dark
+    >
+      <div class="d-flex align-center">
+        <v-img
+          alt="Vuetify Logo"
+          class="shrink mr-2"
+          contain
+          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          transition="scale-transition"
+          width="40"
+        />
+
+        <v-img
+          alt="Vuetify Name"
+          class="shrink mt-1 hidden-sm-and-down"
+          contain
+          min-width="100"
+          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
+          width="100"
+        />
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <v-btn
+        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        target="_blank"
+        text
+      >
+        <span class="mr-2">Latest Release</span>
+        <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-main>
+      <v-container>
+        <v-row class="v-sheet--outlined">
+          <v-col cols="6">
+<!--            <img alt="Vue logo" src="./assets/logo.png">-->
+<!--            <router-view/>-->
+            <h3 class="text-h3 font-weight-medium mb-4" >My personal coast</h3>
+<!--            <button @click="showForm = !showForm">ADD NEW COST +</button>-->
+            <v-btn class="mb-3" @click="showForm = !showForm" color="#24A79A" tile>
+              <div class="white--text">ADD NEW COST</div>
+              <v-icon color="white" class="ml-2">mdi-plus</v-icon>
+            </v-btn>
+            <div class="mb-3">
+              <NewCost v-show="showForm" @addNewPayment="addPaymentItem" :categoryList="categoryList" @getCategory="getCategoryList" @getPaymentList="getPaymentList"/>
+              <div v-show="showForm">
+                <v-container>
+                  <v-row>
+                    <v-col>
+                      <v-btn to="/add/payment/Food?value=200&date=20.03.2020">Food: 200</v-btn>
+                    </v-col>
+                    <v-col>
+                      <v-btn to="/add/payment/Food?value=2000&date=20.03.2020">Food: 2000</v-btn>
+                    </v-col>
+                    <v-col>
+                      <v-btn to="/add/payment/Transport?value=50">Transport: 50</v-btn>
+                    </v-col>
+                    <v-col>
+                      <v-btn to="/add/payment/Entertaiment?value=2000">Entertaiment: 2000</v-btn>
+                    </v-col>
+                  </v-row>
+                </v-container>
+
+
+                <!--      <router-view></router-view>-->
+              </div>
+            </div>
+            <CostsTable :paymentsList="getFilterPaymentList" :currentPage="currentPage" :maxItem="maxItem" ></CostsTable>
+            <div class="mt-5">
+              <Pagination :currentPage="currentPage" :paymentsList="paymentsList" :maxPages="maxPages" @pickedPage="setCurrentPage"/>
+            </div>
+
+          </v-col>
+          <v-col cols="6">
+            graph
+          </v-col>
+        </v-row>
+      </v-container>
+
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-//import HelloWorld from './components/HelloWorld.vue'
 import NewCost from "@/components/NewCost";
 import CostsTable from "@/components/CostsTable";
 import Pagination from "@/components/Pagination";
-
 export default {
   name: 'App',
   components: {
@@ -140,7 +210,6 @@ export default {
     getFilterPaymentList() {
       return this.paymentsList['page'+this.currentPage]
     },
-
   },
   created() {
     this.$store.dispatch("fetchData", 1).then(() => {
@@ -148,25 +217,12 @@ export default {
       this.maxPages = this.$store.getters.getPages
     })
     this.categoryList = this.$store.getters.getCategoryList
-
     // if(location.pathname === '/') {
     //
     // }
   },
   updated() {
     this.maxPages = this.$store.getters.getPages
-
   }
 }
 </script>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
