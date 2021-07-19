@@ -50,7 +50,6 @@ export default {
     return {
       left: '<',
       right: '>',
-      //pages: 0
     }
   },
   methods: {
@@ -65,9 +64,6 @@ export default {
     }
   },
   computed: {
-    /*getPageCount() {
-      return Math.ceil(this.paymentsList.length/5)
-    }*/
   }
 }
 </script>

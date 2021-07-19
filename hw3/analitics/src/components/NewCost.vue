@@ -1,14 +1,10 @@
 <template>
-<!--  <div>-->
   <v-container>
     <v-row align-content="end" align="baseline">
-<!--      <input type="number" placeholder="Payment value" v-model.trim.number="value">-->
       <v-col >
         <v-text-field type="number" label="Payment value" placeholder="123" v-model.trim.number="value"></v-text-field>
       </v-col>
       <v-col style="display: inline-block; position: relative">
-<!--        <div style="display: inline-block; position: relative">-->
-          <!--        <input type="text" placeholder="Payment category" v-model.trim="pickedCategory" @click="showCategory = !showCategory">-->
           <v-text-field
               type="text"
               label="Payment category"
@@ -29,24 +25,17 @@
                     :value="category">
                 </v-radio>
               </v-radio-group>
-
-<!--              <label :for="category + idx">{{ category }}</label>-->
             </div>
           </div>
-<!--        </div>-->
       </v-col>
      <v-col >
        <v-text-field type="text" label="Payment date" placeholder="20.03.2020" v-model.trim="date"></v-text-field>
      </v-col>
-
-<!--      <input type="text" placeholder="Payment date" v-model.trim="date">-->
       <v-btn @click="saveCost">
         Save
       </v-btn>
-<!--      <button @click="saveCost">Save</button>-->
     </v-row>
   </v-container>
-<!--  </div>-->
 </template>
 
 <script>
@@ -87,14 +76,6 @@ export default {
       }
       console.log('save', data)
       this.$emit('addNewPayment', data)
-/*      this.$store.dispatch('loadData', [data]).then(() => {
-        this.$emit('getCategory')
-    //    this.$store.commit('setMaxPages', this.$store.getters.getPaymentList)
-        this.$emit('getPaymentList')
-      })*/
-    //  this.$store.commit('addToPaymentList', [data])
-
-     // this.categoryList = this.$store.getters.getCategoryList
 
     }
   },

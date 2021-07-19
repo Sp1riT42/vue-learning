@@ -1,25 +1,17 @@
 <template>
   <div class="modal">
     <v-container>
-    <v-row>
-      <v-col cols="12" >
-        <v-btn class="float-right" v-if="settings.compName === 'ChangeRow'" @click="closeModal" icon><v-icon>mdi-close</v-icon></v-btn>
-      </v-col>
-      <v-col cols="12" >
-        <v-btn class="d-block mx-auto" v-if="settings.compName === 'ChangeRow'" @click="showChangeForm = !showChangeForm">Редактировать</v-btn>
-        <component v-if="showChangeForm" :is="settings.compName" :categoryList="settings.category" :item="item"/>
-      </v-col>
-      <v-col cols="12">
-        <v-btn class="d-block mx-auto"  v-if="settings.compName === 'ChangeRow'" @click="deleteRow">Удалить</v-btn>
-      </v-col>
-    </v-row>
+      <v-row>
+          <v-btn class="float-right" absolute right v-if="settings.compName === 'ChangeRow'" @click="closeModal" icon><v-icon>mdi-close</v-icon></v-btn>
+        <v-col cols="12" >
+          <v-btn class="d-block mx-auto" v-if="settings.compName === 'ChangeRow'" @click="showChangeForm = !showChangeForm">Редактировать</v-btn>
+          <component v-if="showChangeForm" :is="settings.compName" :categoryList="settings.category" :item="item"/>
+        </v-col>
+        <v-col cols="12">
+          <v-btn class="d-block mx-auto"  v-if="settings.compName === 'ChangeRow'" @click="deleteRow">Удалить</v-btn>
+        </v-col>
+      </v-row>
     </v-container>
-
-<!--    {{item}}-->
-
-
-
-
   </div>
 </template>
 

@@ -41,10 +41,7 @@
       <v-container>
         <v-row class="v-sheet--outlined">
           <v-col cols="6">
-<!--            <img alt="Vue logo" src="./assets/logo.png">-->
-<!--            <router-view/>-->
             <h3 class="text-h3 font-weight-medium mb-4" >My personal coast</h3>
-<!--            <button @click="showForm = !showForm">ADD NEW COST +</button>-->
             <v-btn class="mb-3" @click="showForm = !showForm" color="#24A79A" tile>
               <div class="white--text">ADD NEW COST</div>
               <v-icon color="white" class="ml-2">mdi-plus</v-icon>
@@ -68,19 +65,15 @@
                     </v-col>
                   </v-row>
                 </v-container>
-
-
-                <!--      <router-view></router-view>-->
               </div>
             </div>
             <CostsTable :paymentsList="getFilterPaymentList" :currentPage="currentPage" :maxItem="maxItem" ></CostsTable>
             <div class="mt-5">
               <Pagination :currentPage="currentPage" :paymentsList="paymentsList" :maxPages="maxPages" @pickedPage="setCurrentPage"/>
             </div>
-
           </v-col>
-          <v-col cols="6">
-            graph
+          <v-col cols="4" class="ml-auto">
+            <ChartCost></ChartCost>
           </v-col>
         </v-row>
       </v-container>
@@ -93,13 +86,17 @@
 import NewCost from "@/components/NewCost";
 import CostsTable from "@/components/CostsTable";
 import Pagination from "@/components/Pagination";
+import {Pie} from "vue-chartjs";
+ import ChartCost from "@/components/ChartCost";
 export default {
   name: 'App',
+  extends: Pie,
   components: {
     //HelloWorld
     NewCost,
     CostsTable,
-    Pagination
+    Pagination,
+     ChartCost
   },
   data() {
     return {
@@ -108,7 +105,7 @@ export default {
       maxItem: 3,
       maxPages: 0,
       currentPage: 1,
-      categoryList: []
+      categoryList: [],
     }
   },
   methods: {
@@ -210,6 +207,33 @@ export default {
     getFilterPaymentList() {
       return this.paymentsList['page'+this.currentPage]
     },
+  },
+  mounted() {
+     /* this.renderChart({
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: '# of Votes',
+          data: [12, 19, 3, 5, 2, 3],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        }]
+      })*/
+
   },
   created() {
     this.$store.dispatch("fetchData", 1).then(() => {

@@ -24,7 +24,7 @@ export default new Vuex.Store({
             "page4": [
                 { "id": 10, "date": "29.03.2020", "category": "Entertaiment", "value": 3466 },
                 { "id": 11, "date": "30.03.2020", "category": "Education", "value": 3 },
-                { "id": 12, "date": "31.03.2020", "category": "Food", "value": 346737 }
+                { "id": 12, "date": "31.03.2020", "category": "Food", "value": 3737 }
             ]
         },
         //paymentList: [],
@@ -117,7 +117,23 @@ export default new Vuex.Store({
         getPaymentList: state => state.paymentList,
         getPages: state => state.pages,
         getCategoryList: state => state.categoryList,
-        getMainPaymentList: state => state.mainPaymentList
+        getMainPaymentList: state => state.mainPaymentList,
+        getChartData: state => {
+            let data = {}
+            for(let page in state.mainPaymentList) {
+                state.mainPaymentList[page].forEach(item => {
+                    console.log(data[item.category])
+                    if(data[item.category] === undefined) {
+                        data[item.category] = item.value
+                    }else {
+                        data[item.category] += item.value
+                    }
+
+                })
+            }
+            console.log(data)
+            return data
+        }
     },
     actions: {
         fetchData({commit, getters}, page) {
